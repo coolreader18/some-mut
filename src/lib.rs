@@ -20,7 +20,10 @@ pub trait OptionExt<T>: sealed::Sealed {
 impl<T> sealed::Sealed for Option<T> {}
 impl<T> OptionExt<T> for Option<T> {
     fn some_mut(&mut self) -> Option<SomeMut<'_, T>> {
-        self.is_some().then_some(SomeMut(self))
+        match self {
+            x @ Some(_) => Some(SomeMut(x)),
+            None => None,
+        }
     }
 }
 
